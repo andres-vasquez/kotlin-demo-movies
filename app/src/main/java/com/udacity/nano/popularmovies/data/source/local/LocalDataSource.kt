@@ -8,19 +8,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class LocalDataSource internal constructor(
-    private val moviesDao: MoviesDAO,
+    private val database: MoviesDatabase,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : LocalDataSourceI {
 
     override fun observeMovies(): LiveData<Result<List<MovieDTO>>> {
-        return moviesDao.observeMovies().map {
+        return database.moviesDao().observeMovies().map {
             Result.Success(it)
         }
     }
 
     override suspend fun getMovieById(movieId: Int): Result<MovieDTO> = withContext(ioDispatcher) {
         try {
-            val movie = moviesDao.getMovieById(movieId)
+            val movie = database.moviesDao().getMovieById(movieId)
             if (movie != null) {
                 return@withContext Result.Success(movie)
             } else {
@@ -31,11 +31,11 @@ class LocalDataSource internal constructor(
         }
     }
 
-    override suspend fun insertMovies(movies: List<MovieDTO>) = withContext(ioDispatcher) {
-        moviesDao.insertMovies(movies)
+    override suspend fun insertMovies(vararg movies: MovieDTO) = withContext(ioDispatcher) {
+        database.moviesDao().insertMovies(*movies)
     }
 
     override suspend fun deleteMovies() = withContext(ioDispatcher) {
-        moviesDao.deleteMovies()
+        database.moviesDao().deleteMovies()
     }
 }

@@ -8,7 +8,7 @@ interface LocalDataSourceI {
 
     suspend fun getMovieById(movieId: Int): Result<MovieDTO>
 
-    suspend fun insertMovies(movies: List<MovieDTO>)
+    suspend fun insertMovies(vararg movies: MovieDTO)
 
     suspend fun deleteMovies()
 }
