@@ -13,15 +13,17 @@ import kotlinx.coroutines.withContext
 import androidx.lifecycle.map
 import com.udacity.nano.popularmovies.data.Result
 import com.udacity.nano.popularmovies.data.source.local.*
+import com.udacity.nano.popularmovies.data.source.prefs.PrefsDataSourceI
 import com.udacity.nano.popularmovies.data.succeeded
 import retrofit2.HttpException
 import timber.log.Timber
 import java.lang.Exception
 
 class MovieRepository(
+    private val prefs: PrefsDataSourceI,
     private val local: LocalDataSourceI,
     private val remote: RemoteDataSourceI
-) {
+) : MovieRepositoryI {
 
     private val _status = MutableLiveData<ApiStatus>()
     val status: LiveData<ApiStatus>
@@ -36,7 +38,7 @@ class MovieRepository(
             }
         }
 
-    suspend fun refreshData() {
+    override suspend fun refreshData() {
         if (_status.value != ApiStatus.LOADING) {
             withContext(Dispatchers.IO) {
                 try {
@@ -70,5 +72,13 @@ class MovieRepository(
 
     fun cleanStatus() {
         _status.value = ApiStatus.DONE
+    }
+
+    override fun getUserPrefs(): User? {
+        return prefs.getUserPrefs()
+    }
+
+    override fun saveUserPrefs(user: User) {
+        prefs.saveUserPrefs(user)
     }
 }

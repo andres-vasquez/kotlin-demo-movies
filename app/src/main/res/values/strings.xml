@@ -1,5 +1,10 @@
 <resources>
-    <string name="app_name">PopularMovies</string>
+    <string name="app_name">Top Movies</string>
+
+    <!-- Splash -->
+    <string name="splash_welcome">Welcome! Swipe Up to continue</string>
+    <string name="splash_enter">Enter in the App</string>
+    <string name="splash_title">Show Time!</string>
 
     <string name="nasa_picture_of_day_content_description_format">Movie\'s image: %s</string>
     <string name="this_is_nasa_s_picture_of_day_showing_nothing_yet">This is Movie\'s image, showing nothing yet</string>
