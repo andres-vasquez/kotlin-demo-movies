@@ -4,6 +4,9 @@ object Constants {
     const val API_KEY = "1b501bbda107113acc653f328a2e935d"
     const val BASE_URL = "https://api.themoviedb.org/3/movie/"
     const val DATE_FORMAT = "YYYY-MM-dd"
+    const val DEFAULT_LANGUAGE = "en"
+
+    const val DIRECTORY_IMAGE = "popular-movies-images"
 
     //Prefs
     const val SHARED_PREFS_KEY = "moviesPrefs"

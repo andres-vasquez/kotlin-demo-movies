@@ -19,6 +19,8 @@ class SplashFragment : BaseFragment() {
         val binding = FragmentSplashBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+
+        setHasOptionsMenu(true)
         return binding.root
     }
 }

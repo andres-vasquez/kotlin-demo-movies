@@ -26,10 +26,10 @@ class MovieRepository(
 ) : MovieRepositoryI {
 
     private val _status = MutableLiveData<ApiStatus>()
-    val status: LiveData<ApiStatus>
+    override val status: LiveData<ApiStatus>
         get() = _status
 
-    val movies: LiveData<List<PopularMovie>> =
+    override val movies: LiveData<List<PopularMovie>> =
         Transformations.map(local.observeMovies()) {
             if (it != null && it is Result.Success) {
                 it.data.asDomainModel()
@@ -43,7 +43,8 @@ class MovieRepository(
             withContext(Dispatchers.IO) {
                 try {
                     updateStatus(ApiStatus.LOADING)
-                    val results: Result<List<PopularMovie>> = remote.getPopularMovies()
+                    val lang = prefs.getLanguage()
+                    val results: Result<List<PopularMovie>> = remote.getPopularMovies(lang)
                     if (results is Result.Success) {
                         val dbMovies = results.data.asDatabaseModel()
                         local.deleteMovies()

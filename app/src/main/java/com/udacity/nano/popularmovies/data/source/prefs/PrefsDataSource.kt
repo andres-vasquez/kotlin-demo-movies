@@ -25,6 +25,10 @@ class PrefsDataSource(val app: Application) : PrefsDataSourceI {
         user.language?.let { savePref(Constants.PREFS_LANGUAGE, it) }
     }
 
+    override fun getLanguage(): String {
+        return getPref(Constants.PREFS_LANGUAGE) ?: Constants.DEFAULT_LANGUAGE
+    }
+
     private fun savePref(key: String, value: String) {
         val sharedPref = app.getSharedPreferences(Constants.SHARED_PREFS_KEY, Context.MODE_PRIVATE)
         with(sharedPref.edit()) {

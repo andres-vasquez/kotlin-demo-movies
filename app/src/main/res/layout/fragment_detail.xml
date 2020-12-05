@@ -4,6 +4,10 @@
     <data>
 
         <variable
+            name="selectedMovie"
+            type="com.udacity.nano.popularmovies.data.source.PopularMovie" />
+
+        <variable
             name="viewModel"
             type="com.udacity.nano.popularmovies.ui.moviedetail.MovieDetailViewModel" />
     </data>

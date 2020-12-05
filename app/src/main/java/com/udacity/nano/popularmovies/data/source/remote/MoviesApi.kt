@@ -13,12 +13,13 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 enum class ApiStatus { LOADING, ERROR, DONE }
 
 interface MoviesService {
     @GET("/popular")
-    fun getPopularMovies(): Deferred<MoviesResponse>
+    fun getPopularMovies(@Query("language") lang: String): Deferred<MoviesResponse>
 }
 
 private var loggingInterceptor = HttpLoggingInterceptor()

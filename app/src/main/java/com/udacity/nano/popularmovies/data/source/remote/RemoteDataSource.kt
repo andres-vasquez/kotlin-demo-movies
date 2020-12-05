@@ -8,9 +8,9 @@ import java.lang.NullPointerException
 class RemoteDataSource internal constructor(
 ) : RemoteDataSourceI {
 
-    override suspend fun getPopularMovies(): Result<List<PopularMovie>> {
+    override suspend fun getPopularMovies(lang: String): Result<List<PopularMovie>> {
         return try {
-            val response = MoviesApi.retrofitService.getPopularMovies().await()
+            val response = MoviesApi.retrofitService.getPopularMovies(lang).await()
             return if (response.results.isNullOrEmpty()) {
                 Result.Error(NullPointerException("No movies available"))
             } else {
