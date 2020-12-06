@@ -4,12 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.udacity.nano.popularmovies.databinding.FragmentListBinding
-import com.udacity.nano.popularmovies.databinding.FragmentSplashBinding
 import com.udacity.nano.popularmovies.ui.base.BaseFragment
-import com.udacity.nano.popularmovies.ui.splash.SplashViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MovieListFragment : BaseFragment() {

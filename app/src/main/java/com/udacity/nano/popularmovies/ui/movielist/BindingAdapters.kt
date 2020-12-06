@@ -4,7 +4,6 @@ import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.RatingBar
-import androidx.appcompat.widget.AppCompatSpinner
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide

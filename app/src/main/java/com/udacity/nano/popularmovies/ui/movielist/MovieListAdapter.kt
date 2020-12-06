@@ -9,7 +9,7 @@ import com.udacity.nano.popularmovies.data.source.PopularMovie
 import com.udacity.nano.popularmovies.databinding.ListItemBinding
 
 class MovieListAdapter(val clickListener: MovieClickListener) :
-    ListAdapter<PopularMovie, MovieListAdapter.AsteroidListViewHolder>(DiffCallback) {
+    ListAdapter<PopularMovie, MovieListAdapter.MovieListViewHolder>(DiffCallback) {
     companion object DiffCallback : DiffUtil.ItemCallback<PopularMovie>() {
         override fun areItemsTheSame(oldItem: PopularMovie, newItem: PopularMovie): Boolean {
             return oldItem === newItem
@@ -20,7 +20,7 @@ class MovieListAdapter(val clickListener: MovieClickListener) :
         }
     }
 
-    class AsteroidListViewHolder(private var binding: ListItemBinding) :
+    class MovieListViewHolder(private var binding: ListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(listener: MovieClickListener, movie: PopularMovie) {
             binding.movie = movie
@@ -29,20 +29,20 @@ class MovieListAdapter(val clickListener: MovieClickListener) :
         }
 
         companion object {
-            fun from(parent: ViewGroup): AsteroidListViewHolder {
+            fun from(parent: ViewGroup): MovieListViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = ListItemBinding.inflate(layoutInflater, parent, false)
-                return AsteroidListViewHolder(binding)
+                return MovieListViewHolder(binding)
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AsteroidListViewHolder {
-        return AsteroidListViewHolder.from(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieListViewHolder {
+        return MovieListViewHolder.from(parent)
 
     }
 
-    override fun onBindViewHolder(holder: AsteroidListViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MovieListViewHolder, position: Int) {
         holder.bind(clickListener, getItem(position))
     }
 }

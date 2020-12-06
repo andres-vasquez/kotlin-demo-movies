@@ -15,7 +15,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.navigation.NavigationView
 import com.udacity.nano.popularmovies.data.source.MovieRepositoryI
-import com.udacity.nano.popularmovies.data.source.User
 import com.udacity.nano.popularmovies.databinding.ActivityMainBinding
 import com.udacity.nano.popularmovies.databinding.NavHeaderBinding
 import com.udacity.nano.popularmovies.utils.sendNotification

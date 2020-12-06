@@ -4,8 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.Configuration
-import android.content.res.Resources
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -17,14 +15,12 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.udacity.nano.popularmovies.R
-import com.udacity.nano.popularmovies.data.source.User
 import com.udacity.nano.popularmovies.databinding.FragmentLoginBinding
 import com.udacity.nano.popularmovies.ui.base.BaseFragment
 import com.udacity.nano.popularmovies.utils.CompressImage
 import com.udacity.nano.popularmovies.utils.Constants
 import com.udacity.nano.popularmovies.utils.setLocale
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.*
 
 class LoginFragment : BaseFragment() {
 

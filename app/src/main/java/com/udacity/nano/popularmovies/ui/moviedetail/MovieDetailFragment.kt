@@ -4,17 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.android.material.chip.Chip
 import com.udacity.nano.popularmovies.R
 import com.udacity.nano.popularmovies.data.source.PopularMovie
 import com.udacity.nano.popularmovies.data.source.remote.model.Genre
 import com.udacity.nano.popularmovies.databinding.FragmentDetailBinding
-import com.udacity.nano.popularmovies.databinding.FragmentSplashBinding
 import com.udacity.nano.popularmovies.ui.base.BaseFragment
-import com.udacity.nano.popularmovies.ui.moviedetail.MovieDetailFragmentArgs.Companion.fromBundle
-import com.udacity.nano.popularmovies.ui.splash.SplashViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MovieDetailFragment : BaseFragment() {

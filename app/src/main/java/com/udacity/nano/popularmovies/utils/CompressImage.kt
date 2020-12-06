@@ -7,7 +7,6 @@ import android.graphics.RectF
 import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream

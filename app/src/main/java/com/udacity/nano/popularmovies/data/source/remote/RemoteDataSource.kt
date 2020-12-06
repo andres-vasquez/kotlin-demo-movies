@@ -4,7 +4,6 @@ import com.udacity.nano.popularmovies.data.Result
 import com.udacity.nano.popularmovies.data.source.PopularMovie
 import com.udacity.nano.popularmovies.data.source.remote.model.Genre
 import retrofit2.HttpException
-import java.lang.NullPointerException
 
 class RemoteDataSource internal constructor(
 ) : RemoteDataSourceI {

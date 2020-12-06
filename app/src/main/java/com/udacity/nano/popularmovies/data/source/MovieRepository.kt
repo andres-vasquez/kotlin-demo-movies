@@ -3,16 +3,17 @@ package com.udacity.nano.popularmovies.data.source
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import com.udacity.nano.popularmovies.data.Result
+import com.udacity.nano.popularmovies.data.source.local.LocalDataSourceI
+import com.udacity.nano.popularmovies.data.source.local.asDatabaseModel
+import com.udacity.nano.popularmovies.data.source.local.asDomainModel
+import com.udacity.nano.popularmovies.data.source.prefs.PrefsDataSourceI
 import com.udacity.nano.popularmovies.data.source.remote.ApiStatus
 import com.udacity.nano.popularmovies.data.source.remote.RemoteDataSourceI
+import com.udacity.nano.popularmovies.data.source.remote.model.Genre
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import com.udacity.nano.popularmovies.data.Result
-import com.udacity.nano.popularmovies.data.source.local.*
-import com.udacity.nano.popularmovies.data.source.prefs.PrefsDataSourceI
-import com.udacity.nano.popularmovies.data.source.remote.model.Genre
 import timber.log.Timber
-import java.lang.Exception
 
 class MovieRepository(
     private val prefs: PrefsDataSourceI,

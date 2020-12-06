@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.udacity.nano.popularmovies.data.source.MovieRepositoryI
-import java.lang.Exception
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 

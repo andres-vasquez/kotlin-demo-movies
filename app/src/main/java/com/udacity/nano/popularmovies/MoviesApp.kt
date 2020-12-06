@@ -7,7 +7,6 @@ import com.udacity.nano.popularmovies.data.source.MovieRepository
 import com.udacity.nano.popularmovies.data.source.MovieRepositoryI
 import com.udacity.nano.popularmovies.data.source.local.LocalDataSource
 import com.udacity.nano.popularmovies.data.source.local.LocalDataSourceI
-import com.udacity.nano.popularmovies.data.source.local.MoviesDatabase
 import com.udacity.nano.popularmovies.data.source.local.getDatabase
 import com.udacity.nano.popularmovies.data.source.prefs.PrefsDataSource
 import com.udacity.nano.popularmovies.data.source.prefs.PrefsDataSourceI
@@ -21,7 +20,6 @@ import com.udacity.nano.popularmovies.work.MoviesRefreshWorker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.get
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin

@@ -1,11 +1,9 @@
 package com.udacity.nano.popularmovies.data.source.remote
 
 import com.google.gson.GsonBuilder
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.udacity.nano.popularmovies.data.source.remote.model.GenresResponse
 import com.udacity.nano.popularmovies.data.source.remote.model.MoviesResponse
 import com.udacity.nano.popularmovies.utils.Constants
-import kotlinx.coroutines.Deferred
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
