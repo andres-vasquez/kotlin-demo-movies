@@ -3,7 +3,9 @@ package com.udacity.nano.popularmovies.data.source.local
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 import com.udacity.nano.popularmovies.data.source.PopularMovie
+import com.udacity.nano.popularmovies.utils.Constants
 import com.udacity.nano.popularmovies.utils.dateToString
 import com.udacity.nano.popularmovies.utils.strToDate
 import java.util.*
@@ -17,7 +19,9 @@ data class MovieDTO @JvmOverloads constructor(
     @ColumnInfo(name = "adult") val adult: Boolean,
     @ColumnInfo(name = "popularity") val popularity: Double,
     @ColumnInfo(name = "poster_path") val poster_path: String,
-    @ColumnInfo(name = "release_date") val release_date: Date
+    @ColumnInfo(name = "release_date") val release_date: Date,
+    @ColumnInfo(name = "rating") val rating: Double,
+    @SerializedName("genre_ids") val genre_ids: List<Int>
 )
 
 fun List<MovieDTO>.asDomainModel(): List<PopularMovie> {
@@ -30,7 +34,9 @@ fun List<MovieDTO>.asDomainModel(): List<PopularMovie> {
             adult = it.adult,
             image = it.poster_path,
             popularity = it.popularity,
-            releaseDate = dateToString(it.release_date)
+            releaseDate = dateToString(it.release_date, Constants.DATE_FORMAT_DISPLAY),
+            rating = it.rating,
+            genre_ids = it.genre_ids
         )
     }
 }
@@ -45,7 +51,9 @@ fun List<PopularMovie>.asDatabaseModel(): Array<MovieDTO> {
             adult = it.adult,
             popularity = it.popularity,
             poster_path = it.image,
-            release_date = strToDate(it.releaseDate)
+            release_date = strToDate(it.releaseDate),
+            rating = it.rating,
+            genre_ids = it.genre_ids
         )
     }.toTypedArray()
 }

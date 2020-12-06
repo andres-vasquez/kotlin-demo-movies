@@ -1,9 +1,8 @@
 package com.udacity.nano.popularmovies.data.source.remote
 
+import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import com.udacity.nano.popularmovies.data.source.local.MovieDTO
+import com.udacity.nano.popularmovies.data.source.remote.model.GenresResponse
 import com.udacity.nano.popularmovies.data.source.remote.model.MoviesResponse
 import com.udacity.nano.popularmovies.utils.Constants
 import kotlinx.coroutines.Deferred
@@ -11,15 +10,18 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 enum class ApiStatus { LOADING, ERROR, DONE }
 
 interface MoviesService {
-    @GET("/popular")
-    fun getPopularMovies(@Query("language") lang: String): Deferred<MoviesResponse>
+    @GET("/3/movie/popular")
+    suspend fun getPopularMovies(@Query("language") lang: String): MoviesResponse
+
+    @GET("/3/genre/movie/list")
+    suspend fun getGenres(@Query("language") lang: String): GenresResponse
 }
 
 private var loggingInterceptor = HttpLoggingInterceptor()
@@ -42,13 +44,19 @@ private val httpClient = OkHttpClient.Builder()
         return@addInterceptor chain.proceed(request)
     }.build()
 
+/* Moshi is not working
 val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
-    .build()
+    .build()*/
+
+val gson = GsonBuilder()
+    .setLenient()
+    .create()
 
 private val retrofit = Retrofit.Builder()
-    .addConverterFactory(MoshiConverterFactory.create(moshi))
-    .addCallAdapterFactory(CoroutineCallAdapterFactory())
+    //.addConverterFactory(MoshiConverterFactory.create(moshi))
+    .addConverterFactory(GsonConverterFactory.create(gson))
+    //.addCallAdapterFactory(CoroutineCallAdapterFactory())
     .baseUrl(Constants.BASE_URL)
     .client(httpClient)
     .build()

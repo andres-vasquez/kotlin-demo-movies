@@ -3,6 +3,7 @@ package com.udacity.nano.popularmovies.ui.movielist
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
+import android.widget.RatingBar
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +15,7 @@ import com.bumptech.glide.request.target.Target
 import com.udacity.nano.popularmovies.R
 import com.udacity.nano.popularmovies.data.source.PopularMovie
 import com.udacity.nano.popularmovies.data.source.User
+import com.udacity.nano.popularmovies.utils.Constants
 
 @BindingAdapter("userImage")
 fun bindMUserImage(imageView: ImageView, user: User?) {
@@ -29,12 +31,19 @@ fun bindMUserImage(imageView: ImageView, user: User?) {
     }
 }
 
+@BindingAdapter("movieRanking")
+fun bindMovieRanking(ranking: RatingBar, movie: PopularMovie?) {
+    if (movie != null) {
+        ranking.rating = movie.rating.toFloat()
+    }
+}
+
 @BindingAdapter("moviePicture")
 fun bindMovieImage(imageView: ImageView, movie: PopularMovie?) {
     if (movie != null) {
 
         Glide.with(imageView)
-            .load(movie.image)
+            .load(Constants.BASE_IMAGE_URL + movie.image)
             .placeholder(R.drawable.loading_animation)
             .error(R.drawable.ic_broken_image)
             .listener(object : RequestListener<Drawable> {

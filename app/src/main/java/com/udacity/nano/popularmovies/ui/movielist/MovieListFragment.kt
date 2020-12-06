@@ -34,7 +34,6 @@ class MovieListFragment : BaseFragment() {
 
         // Sets the adapter of the RecyclerView
         binding.moviesRecycler.adapter = adapter
-
         return binding.root
     }
 }

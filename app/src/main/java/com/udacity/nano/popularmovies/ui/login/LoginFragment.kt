@@ -4,6 +4,8 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -21,6 +23,7 @@ import com.udacity.nano.popularmovies.ui.base.BaseFragment
 import com.udacity.nano.popularmovies.utils.CompressImage
 import com.udacity.nano.popularmovies.utils.Constants
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.*
 
 class LoginFragment : BaseFragment() {
 
@@ -31,19 +34,24 @@ class LoginFragment : BaseFragment() {
     private var fileCoverPhoto: Uri? = null
     private var languageSelected: String = Constants.DEFAULT_LANGUAGE
 
+    private lateinit var binding: FragmentLoginBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentLoginBinding.inflate(inflater)
+        binding = FragmentLoginBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        binding.user = User("", null, null)
+
+        //Load user data
+        viewModel.currentUser.observe(viewLifecycleOwner, Observer { binding.user = it })
 
         //Spinner
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 languageSelected = p0?.selectedItem.toString()
+                setLocale(requireActivity(), languageSelected)
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -69,6 +77,14 @@ class LoginFragment : BaseFragment() {
             }
         }
         return binding.root
+    }
+
+    private fun updateUserInBinding() {
+        val user = binding.user
+        if (user != null && fileCoverPhoto != null) {
+            user.photo = fileCoverPhoto.toString()
+            binding.user = user
+        }
     }
 
     private fun getPhoto() {
@@ -117,6 +133,7 @@ class LoginFragment : BaseFragment() {
             if (requestCode == RC_GALLERY && data != null && data.data != null) {
                 val image = data.data
                 fileCoverPhoto = CompressImage.compressImage(image, requireContext())
+                updateUserInBinding()
             }
         }
     }
@@ -128,5 +145,14 @@ class LoginFragment : BaseFragment() {
         startActivityForResult(
             Intent.createChooser(intent, getString(R.string.pick_image)), RC_GALLERY
         )
+    }
+
+    private fun setLocale(activity: Activity, languageCode: String?) {
+        val locale = Locale(languageCode)
+        Locale.setDefault(locale)
+        val resources: Resources = activity.resources
+        val config: Configuration = resources.configuration
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.getDisplayMetrics())
     }
 }

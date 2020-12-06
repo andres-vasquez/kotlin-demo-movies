@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.udacity.nano.popularmovies.ui.splash.SplashFragment"
-        android:label="SplashFragment"
+        android:label="@string/windows_splash"
         app:startDestination="@id/splashFragment"
         tools:layout="@layout/fragment_splash">
 
@@ -22,7 +22,7 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.udacity.nano.popularmovies.ui.login.LoginFragment"
-        android:label="LoginFragment"
+        android:label="@string/windows_login"
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_movieListFragment"
@@ -31,8 +31,8 @@
     <fragment
         android:id="@+id/movieDetailFragment"
         android:name="com.udacity.nano.popularmovies.ui.moviedetail.MovieDetailFragment"
-        android:label="MovieDetailFragment"
-        tools:layout="@layout/fragment_detail" >
+        android:label="@string/windows_detail"
+        tools:layout="@layout/fragment_detail">
         <argument
             android:name="movie"
             app:argType="com.udacity.nano.popularmovies.data.source.PopularMovie" />
@@ -40,7 +40,7 @@
     <fragment
         android:id="@+id/movieListFragment"
         android:name="com.udacity.nano.popularmovies.ui.movielist.MovieListFragment"
-        android:label="MovieListFragment"
+        android:label="@string/windows_list"
         tools:layout="@layout/fragment_list">
 
         <action

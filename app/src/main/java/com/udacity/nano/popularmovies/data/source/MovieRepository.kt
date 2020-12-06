@@ -3,19 +3,14 @@ package com.udacity.nano.popularmovies.data.source
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import androidx.lifecycle.map
 import com.udacity.nano.popularmovies.data.source.remote.ApiStatus
-import com.udacity.nano.popularmovies.data.source.remote.MoviesApi
 import com.udacity.nano.popularmovies.data.source.remote.RemoteDataSourceI
-import com.udacity.nano.popularmovies.data.source.remote.moshi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import androidx.lifecycle.map
 import com.udacity.nano.popularmovies.data.Result
 import com.udacity.nano.popularmovies.data.source.local.*
 import com.udacity.nano.popularmovies.data.source.prefs.PrefsDataSourceI
-import com.udacity.nano.popularmovies.data.succeeded
-import retrofit2.HttpException
+import com.udacity.nano.popularmovies.data.source.remote.model.Genre
 import timber.log.Timber
 import java.lang.Exception
 
@@ -81,5 +76,26 @@ class MovieRepository(
 
     override fun saveUserPrefs(user: User) {
         prefs.saveUserPrefs(user)
+    }
+
+    override suspend fun getGenres(genres: Set<Int>): List<Genre> {
+        return try {
+            val lang = prefs.getLanguage()
+            val results: Result<List<Genre>> = remote.getGenres(lang)
+            if (results is Result.Success) {
+                return results.data.filter { it -> genres.contains(it.id) }
+            } else {
+                if (results is Result.Error) {
+                    Timber.e(results.exception)
+                } else {
+                    Timber.e(results.toString())
+                }
+                updateStatus(ApiStatus.ERROR)
+                listOf()
+            }
+        } catch (ex: Exception) {
+            Timber.e(ex)
+            listOf()
+        }
     }
 }
