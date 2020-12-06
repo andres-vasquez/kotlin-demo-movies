@@ -22,6 +22,7 @@ import com.udacity.nano.popularmovies.databinding.FragmentLoginBinding
 import com.udacity.nano.popularmovies.ui.base.BaseFragment
 import com.udacity.nano.popularmovies.utils.CompressImage
 import com.udacity.nano.popularmovies.utils.Constants
+import com.udacity.nano.popularmovies.utils.setLocale
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -51,7 +52,6 @@ class LoginFragment : BaseFragment() {
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 languageSelected = p0?.selectedItem.toString()
-                setLocale(requireActivity(), languageSelected)
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -74,6 +74,7 @@ class LoginFragment : BaseFragment() {
                 user.language = languageSelected
                 fileCoverPhoto?.let { user.photo = fileCoverPhoto.toString() }
                 viewModel.validateAndSave(user)
+                setLocale(requireActivity(), languageSelected, true)
             }
         }
         return binding.root
@@ -145,14 +146,5 @@ class LoginFragment : BaseFragment() {
         startActivityForResult(
             Intent.createChooser(intent, getString(R.string.pick_image)), RC_GALLERY
         )
-    }
-
-    private fun setLocale(activity: Activity, languageCode: String?) {
-        val locale = Locale(languageCode)
-        Locale.setDefault(locale)
-        val resources: Resources = activity.resources
-        val config: Configuration = resources.configuration
-        config.setLocale(locale)
-        resources.updateConfiguration(config, resources.getDisplayMetrics())
     }
 }

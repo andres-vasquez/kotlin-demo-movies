@@ -15,9 +15,11 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.navigation.NavigationView
 import com.udacity.nano.popularmovies.data.source.MovieRepositoryI
+import com.udacity.nano.popularmovies.data.source.User
 import com.udacity.nano.popularmovies.databinding.ActivityMainBinding
 import com.udacity.nano.popularmovies.databinding.NavHeaderBinding
 import com.udacity.nano.popularmovies.utils.sendNotification
+import com.udacity.nano.popularmovies.utils.setLocale
 import org.koin.android.ext.android.inject
 
 
@@ -30,6 +32,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val repository: MovieRepositoryI by inject()
+        repository.getUserPrefs()?.let { setLocale(this, it.language) }
 
         val binding =
             DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)

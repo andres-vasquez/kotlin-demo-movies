@@ -19,7 +19,7 @@
     <!-- Login -->
     <string name="title">Welcome, please enter your basic data to suggest the Best Movies</string>
     <string name="login_display_name">Enter display name</string>
-    <string name="login_language">Language of the app</string>
+    <string name="login_language">App\'s Language</string>
 
     <string name="error_login_display_name">Please enter your name</string>
 
