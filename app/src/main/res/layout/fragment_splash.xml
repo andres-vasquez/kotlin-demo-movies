@@ -11,7 +11,7 @@
     </data>
 
     <androidx.constraintlayout.motion.widget.MotionLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:background="@color/black"
         app:layoutDescription="@xml/fragment_splash_scene">
@@ -26,7 +26,6 @@
                 android:id="@+id/splash_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +41,6 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_xl"
                 android:textStyle="bold"
-                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -53,7 +51,9 @@
             android:id="@+id/splash_background_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorAccent">
+            android:background="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="parent">
 
             <ImageView
                 android:id="@+id/splash2_image"
@@ -86,8 +86,11 @@
                 style="@style/Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_baseline_play_arrow_24"
                 android:onClick="@{()-> viewModel.navigateToTheNextScreen()}"
                 android:text="@string/splash_enter"
+                android:textSize="@dimen/text_lg"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
