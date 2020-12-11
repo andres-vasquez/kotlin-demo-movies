@@ -8,9 +8,9 @@ import retrofit2.HttpException
 class RemoteDataSource internal constructor(
 ) : RemoteDataSourceI {
 
-    override suspend fun getPopularMovies(lang: String): Result<List<PopularMovie>> {
+    override suspend fun getPopularMovies(lang: String, page: Int): Result<List<PopularMovie>> {
         return try {
-            val response = MoviesApi.retrofitService.getPopularMovies(lang)
+            val response = MoviesApi.retrofitService.getPopularMovies(lang, page)
             return if (response.results.isNullOrEmpty()) {
                 Result.Error(NullPointerException("No movies available"))
             } else {

@@ -1,6 +1,7 @@
 package com.udacity.nano.popularmovies.data.source.remote
 
 import com.google.gson.GsonBuilder
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.udacity.nano.popularmovies.data.source.remote.model.GenresResponse
 import com.udacity.nano.popularmovies.data.source.remote.model.MoviesResponse
 import com.udacity.nano.popularmovies.utils.Constants
@@ -16,7 +17,10 @@ enum class ApiStatus { LOADING, ERROR, DONE }
 
 interface MoviesService {
     @GET("/3/movie/popular")
-    suspend fun getPopularMovies(@Query("language") lang: String): MoviesResponse
+    suspend fun getPopularMovies(
+        @Query("language") lang: String,
+        @Query("page") page: Int
+    ): MoviesResponse
 
     @GET("/3/genre/movie/list")
     suspend fun getGenres(@Query("language") lang: String): GenresResponse
@@ -42,19 +46,13 @@ private val httpClient = OkHttpClient.Builder()
         return@addInterceptor chain.proceed(request)
     }.build()
 
-/* Moshi is not working
-val moshi = Moshi.Builder()
-    .add(KotlinJsonAdapterFactory())
-    .build()*/
-
 val gson = GsonBuilder()
     .setLenient()
     .create()
 
 private val retrofit = Retrofit.Builder()
-    //.addConverterFactory(MoshiConverterFactory.create(moshi))
     .addConverterFactory(GsonConverterFactory.create(gson))
-    //.addCallAdapterFactory(CoroutineCallAdapterFactory())
+    .addCallAdapterFactory(CoroutineCallAdapterFactory())
     .baseUrl(Constants.BASE_URL)
     .client(httpClient)
     .build()

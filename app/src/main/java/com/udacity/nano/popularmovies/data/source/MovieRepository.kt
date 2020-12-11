@@ -2,19 +2,26 @@ package com.udacity.nano.popularmovies.data.source
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.udacity.nano.popularmovies.data.Result
 import com.udacity.nano.popularmovies.data.source.local.LocalDataSourceI
+import com.udacity.nano.popularmovies.data.source.local.MovieDTO
 import com.udacity.nano.popularmovies.data.source.local.asDatabaseModel
-import com.udacity.nano.popularmovies.data.source.local.asDomainModel
 import com.udacity.nano.popularmovies.data.source.prefs.PrefsDataSourceI
 import com.udacity.nano.popularmovies.data.source.remote.ApiStatus
 import com.udacity.nano.popularmovies.data.source.remote.RemoteDataSourceI
 import com.udacity.nano.popularmovies.data.source.remote.model.Genre
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import kotlinx.coroutines.flow.Flow
 
+const val STARTING_PAGE_INDEX = 1
+
+@ExperimentalCoroutinesApi
 class MovieRepository(
     private val prefs: PrefsDataSourceI,
     private val local: LocalDataSourceI,
@@ -25,14 +32,23 @@ class MovieRepository(
     override val status: LiveData<ApiStatus>
         get() = _status
 
-    override val movies: LiveData<List<PopularMovie>> =
-        Transformations.map(local.observeMovies()) {
-            if (it != null && it is Result.Success) {
-                it.data.asDomainModel()
-            } else {
-                ArrayList<PopularMovie>()
-            }
-        }
+
+
+    override fun getPagingMovies(): Flow<PagingData<MovieDTO>> {
+        val pagingSourceFactory = { local.getMovies() }
+        return Pager(
+            config = PagingConfig(
+                pageSize = NETWORK_PAGE_SIZE,
+                enablePlaceholders = false
+            ),
+            remoteMediator = MovieRemoteMediator(
+                prefs,
+                local,
+                remote
+            ),
+            pagingSourceFactory = pagingSourceFactory
+        ).flow
+    }
 
     override suspend fun refreshData() {
         if (_status.value != ApiStatus.LOADING) {
@@ -40,11 +56,12 @@ class MovieRepository(
                 try {
                     updateStatus(ApiStatus.LOADING)
                     val lang = prefs.getLanguage()
-                    val results: Result<List<PopularMovie>> = remote.getPopularMovies(lang)
+                    val results: Result<List<PopularMovie>> =
+                        remote.getPopularMovies(lang, STARTING_PAGE_INDEX)
                     if (results is Result.Success) {
                         val dbMovies = results.data.asDatabaseModel()
                         local.deleteMovies()
-                        local.insertMovies(*dbMovies)
+                        local.insertMovies(dbMovies.toList())
                     } else {
                         if (results is Result.Error) {
                             Timber.e(results.exception)
@@ -98,5 +115,9 @@ class MovieRepository(
             Timber.e(ex)
             listOf()
         }
+    }
+
+    companion object {
+        private const val NETWORK_PAGE_SIZE = 10
     }
 }

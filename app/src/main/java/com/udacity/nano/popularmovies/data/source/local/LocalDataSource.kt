@@ -1,7 +1,9 @@
 package com.udacity.nano.popularmovies.data.source.local
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.map
+import androidx.paging.PagedList
+import androidx.paging.PagingSource
+import com.example.android.codelabs.paging.db.RemoteKeys
 import com.udacity.nano.popularmovies.data.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -12,11 +14,10 @@ class LocalDataSource internal constructor(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : LocalDataSourceI {
 
-    override fun observeMovies(): LiveData<Result<List<MovieDTO>>> {
-        return database.moviesDao().observeMovies().map {
-            Result.Success(it)
-        }
+    override fun getMovies(): PagingSource<Int, MovieDTO> {
+        return database.moviesDao().getMovies()
     }
+
 
     override suspend fun getMovieById(movieId: Int): Result<MovieDTO> = withContext(ioDispatcher) {
         try {
@@ -31,11 +32,23 @@ class LocalDataSource internal constructor(
         }
     }
 
-    override suspend fun insertMovies(vararg movies: MovieDTO) = withContext(ioDispatcher) {
-        database.moviesDao().insertMovies(*movies)
+    override suspend fun insertMovies(movies: List<MovieDTO>) = withContext(ioDispatcher) {
+        database.moviesDao().insertMovies(movies)
     }
 
     override suspend fun deleteMovies() = withContext(ioDispatcher) {
         database.moviesDao().deleteMovies()
+    }
+
+    override suspend fun insertAllRemoteKeys(remoteKey: List<RemoteKeys>) {
+        database.remoteKeysDao().insertAll(remoteKey)
+    }
+
+    override suspend fun remoteKeysMovieId(movieId: Long): RemoteKeys? {
+        return database.remoteKeysDao().remoteKeysRepoId(movieId)
+    }
+
+    override suspend fun clearRemoteKeys() {
+        database.remoteKeysDao().clearRemoteKeys()
     }
 }
