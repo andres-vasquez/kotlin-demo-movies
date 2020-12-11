@@ -8,8 +8,11 @@ import java.util.*
 
 class DatabaseTypeConverter {
     @TypeConverter
-    fun fromDate(date: Date): Long {
-        return date.time
+    fun fromDate(date: Date?): Long {
+        if (date != null) {
+            return date.time
+        }
+        return 0
     }
 
     @TypeConverter

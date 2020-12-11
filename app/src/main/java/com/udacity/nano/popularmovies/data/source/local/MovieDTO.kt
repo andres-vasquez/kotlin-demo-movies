@@ -1,5 +1,7 @@
 package com.udacity.nano.popularmovies.data.source.local
 
+import androidx.annotation.Nullable
+import androidx.lifecycle.Transformations.map
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -19,10 +21,27 @@ data class MovieDTO @JvmOverloads constructor(
     @ColumnInfo(name = "adult") val adult: Boolean,
     @ColumnInfo(name = "popularity") val popularity: Double,
     @ColumnInfo(name = "poster_path") val poster_path: String,
-    @ColumnInfo(name = "release_date") val release_date: Date,
+    @ColumnInfo(name = "release_date") @Nullable val release_date: Date?,
     @ColumnInfo(name = "rating") val rating: Double,
     @SerializedName("genre_ids") val genre_ids: List<Int>
 )
+
+fun MovieDTO.toDomainModel(): PopularMovie {
+    return let {
+        PopularMovie(
+            id = it.id,
+            displayName = it.original_title,
+            overview = it.overview,
+            language = it.original_language,
+            adult = it.adult,
+            image = it.poster_path,
+            popularity = it.popularity,
+            releaseDate = dateToString(it.release_date, Constants.DATE_FORMAT_DISPLAY),
+            rating = it.rating,
+            genre_ids = it.genre_ids
+        )
+    }
+}
 
 fun List<MovieDTO>.asDomainModel(): List<PopularMovie> {
     return map {

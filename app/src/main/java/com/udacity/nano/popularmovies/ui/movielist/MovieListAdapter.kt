@@ -2,6 +2,8 @@ package com.udacity.nano.popularmovies.ui.movielist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -9,7 +11,8 @@ import com.udacity.nano.popularmovies.data.source.PopularMovie
 import com.udacity.nano.popularmovies.databinding.ListItemBinding
 
 class MovieListAdapter(val clickListener: MovieClickListener) :
-    ListAdapter<PopularMovie, MovieListAdapter.MovieListViewHolder>(DiffCallback) {
+    PagingDataAdapter<PopularMovie, MovieListAdapter.MovieListViewHolder>(DiffCallback) {
+
     companion object DiffCallback : DiffUtil.ItemCallback<PopularMovie>() {
         override fun areItemsTheSame(oldItem: PopularMovie, newItem: PopularMovie): Boolean {
             return oldItem === newItem
@@ -43,7 +46,8 @@ class MovieListAdapter(val clickListener: MovieClickListener) :
     }
 
     override fun onBindViewHolder(holder: MovieListViewHolder, position: Int) {
-        holder.bind(clickListener, getItem(position))
+        val movie: PopularMovie? = getItem(position)
+        movie?.let { holder.bind(clickListener, it) }
     }
 }
 

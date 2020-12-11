@@ -5,6 +5,8 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.RatingBar
 import androidx.databinding.BindingAdapter
+import androidx.paging.PagedList
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -72,12 +74,6 @@ fun bindMovieImage(imageView: ImageView, movie: PopularMovie?) {
             })
             .into(imageView)
     }
-}
-
-@BindingAdapter("listData")
-fun bindRecyclerView(recyclerView: RecyclerView, data: List<PopularMovie>?) {
-    val adapter = recyclerView.adapter as MovieListAdapter
-    adapter.submitList(data)
 }
 
 @BindingAdapter("loadingVisibility")
